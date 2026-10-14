@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Слайдер</title>
+
+  <style>
+    .slider {
+      width: 360px;
+      margin: 80px 40px;
+      user-select: none;
+    }
+    .slider-track {
+      position: relative;
+      height: 8px;
+      border-radius: 4px;
+      background: #ddd;
+      cursor: pointer;
+    }
+    .slider-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 4px;
+      background: #08b85a;
+    }
+    .slider-thumb {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #08b85a;
+      transform: translate(-50%, -50%);
+      cursor: grab;
+    }
+    .slider-thumb:active {
+      cursor: grabbing;
+    }
+    .slider-value {
+      position: absolute;
+      left: 0;
+      bottom: 22px;
+      transform: translateX(-50%);
+      min-width: 24px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+ <div class="slider">
+ <div class="slider-track" id="track">
+ <div class="slider-fill" id="fill"></div>
+ <div class="slider-thumb" id="thumb">
+ <span class="slider-value" id="value">0</span>
+ </div>
+    </div>
+
+         <div class="slider-labels">
+           <span>0</span>
+             <span>20</span>
+              <span>40</span>
+                <span>60</span>
+                <span>80</span>
+                <span>100</span>
+                </div>
+                </div>
+               <script>
+ const track = document.getElementById("track");
+ const thumb = document.getElementById("thumb");
+ const fill = document.getElementById("fill");
+ const valueText = document.getElementById("value");
+
+  let value = 0;
+ let isDragging = false;
+
+  function setValueFromMouse(event) {
+    const rect = track.getBoundingClientRect();
+
+      let position = (event.clientX - rect.left) / rect.width;
+      position = Math.max(0, Math.min(1, position));
+
+      value = Math.round(position * 100);
+
+   thumb.style.left = value + "%";
+      fill.style.width = value + "%";
+      valueText.textContent = value;
+    }
+
+    track.addEventListener("mousedown", function(event) {
+    isDragging = true;
+      setValueFromMouse(event);
+    });
+
+  document.addEventListener("mousemove", function(event) {
+     if (isDragging) {
+     setValueFromMouse(event);
+      }
+    });
+
+    document.addEventListener("mouseup", function() {
+      isDragging = false;
+    });
+  </script>
+</body>
+</html>
